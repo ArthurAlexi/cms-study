@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -11,4 +5,40 @@ generator client {
 datasource db {
   provider = "mongodb"
   url      = env("DATABASE_URL")
+}
+
+model MainCharacter {
+  id        String  @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  pages     Page[]  @relation("CharacterPages")
+  generalId String  @db.ObjectId
+  general   General @relation(fields: [generalId], references: [id], name: "CharacterGeneral")
+
+  @@map("main_character")
+}
+
+model General {
+  id                String          @id @default(auto()) @map("_id") @db.ObjectId
+  url_logo          String
+  primary_color     String
+  secondary_color   String
+  background_color  String
+  forenground_color String
+  text_color        String
+  characters        MainCharacter[] @relation("CharacterGeneral")
+
+  @@map("general")
+}
+
+model Page {
+  id             String @id @default(auto()) @map("_id") @db.ObjectId
+  name           String
+  title          String
+  sub_title      String
+  main_image_url String
+
+  mainCharacterId String        @db.ObjectId
+  mainCharacter   MainCharacter @relation(fields: [mainCharacterId], references: [id], name: "CharacterPages")
+
+  @@map("page")
 }
