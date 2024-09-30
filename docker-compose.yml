@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+
+  mongo:
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: cms-study
+      MONGO_INITDB_ROOT_PASSWORD: cms-study
+    
+    volumes:
+      - ./data/mongo:/data/db
+
+  mongo-express:
+    image: mongo-express
+    restart: always
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: cms-study
+      ME_CONFIG_MONGODB_ADMINPASSWORD: cms-study
+      ME_CONFIG_MONGODB_URL: mongodb://cms-study:cms-study@mongo:27017/
+      ME_CONFIG_BASICAUTH: false
