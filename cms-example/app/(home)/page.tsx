@@ -2,10 +2,25 @@ import Image from "next/image";
 
 export default function Home() {
   return (
-     <div className="">
-        <h1>
-          Hello horld
-        </h1>
-     </div> 
+     <main className="container mx-auto flex h-[70vh] items-center  justify-around flex-wrap gap-4">
+        <div className="max-w-md space-y-6">
+          <h1 className="text-6xl font-bold text-primary">
+            Fake enterprise
+          </h1>
+          <h2 className="text-xl font-semibold text-secondary">
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Aspernatur illo, odio neque inventore reiciendis velit delectus ullam quia dignissimos 
+          </h2>
+
+          <button className="px-8 py-2 bg-primary rounded-md text-white hover:bg-primary/80">
+            Lorem
+          </button>
+        </div>
+
+        <Image 
+          width={420}
+          height={200}
+          src='https://medrectech.com/image/enterprise.png' 
+          alt="enterpise image" />
+     </main> 
   );
 }
