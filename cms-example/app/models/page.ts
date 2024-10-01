@@ -3,8 +3,10 @@ import { Document, Schema, model, models } from "mongoose";
 export interface IPage extends Document {
     name: string
     title: string
-    subtitle: string
+    path?: string
+    sub_title: string
     main_image_url: string
+    main_character_name: string
 }
 
 export const pageSchema = new Schema<IPage>({
@@ -16,13 +18,21 @@ export const pageSchema = new Schema<IPage>({
         type: String,
         required: true,
     },
-    subtitle: {
+    path: {
+        type: String,  
+    },
+    sub_title: {
         type: String,
         required: true,
     },
     main_image_url: {
         type: String,
         required: true,
+    },
+    main_character_name: {
+        type: String,
+        required: true,
+        index: true,
     },
 });
 
