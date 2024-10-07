@@ -1,7 +1,9 @@
+import { NextResponse } from 'next/server';
 import General, { IGeneral } from "@/models/general";
 import MainCharacter, { IMainCharacter } from "@/models/mainCharacter";
 import Page, { IPage } from "@/models/page";
 import { NextApiRequest, NextApiResponse } from "next";
+
 import { ZodError, z } from "zod";
 
 const mainCharacterSchema = z.object({
@@ -23,15 +25,16 @@ const generalSchema = z.object({
     text_color: z.string().min(1, "Text color is required")
 })
 
-// Interface da BodyRequest
 interface BodyRequest {
     mainCharacter: IMainCharacter
     page: IPage
     general: IGeneral
 }
 
-export async function POST(req: NextApiRequest, res: NextApiResponse) {
-    const { mainCharacter, page, general } = req.body as BodyRequest
+export async function POST(req: Request) {
+    console.log('called request to create a main character')
+
+    const { mainCharacter, page, general } = await req.json() as BodyRequest
 
     try {
         mainCharacterSchema.parse(mainCharacter)
@@ -69,22 +72,39 @@ export async function POST(req: NextApiRequest, res: NextApiResponse) {
             newGeneral.save(),
             newPage.save()
         ])
-         
-        return res.status(201).json({
-            mainCharacterName: mainCharacter.name
-        })
+
+        return new NextResponse(
+            JSON.stringify({
+                mainCharacterName: mainCharacter.name
+            }),
+            {
+                status: 201
+            }
+        )
+
     } catch (error: any) {
 
         if (error instanceof ZodError) {
-            return res.status(400).json({
-                message: 'Validation error',
-                error: error.errors
-            })
+            return new NextResponse(
+                JSON.stringify({
+                    message: 'Validation error',
+                    error: error.errors
+                }),
+                {
+                    status: 400
+                }
+            )
         }
 
         console.log(error)
-        return res.status(500).json({
-            message: 'Error saving the data'
-        })
+        return new NextResponse(
+            JSON.stringify({
+                message: 'Error saving the data',
+                error: error.errors
+            }),
+            {
+                status: 500
+            }
+        )
     }
 }
