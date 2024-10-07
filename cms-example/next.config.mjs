@@ -14,6 +14,9 @@ const nextConfig = {
         {
             hostname: "medrectech.com",
         },
+        {
+            hostname: "encrypted-tbn0.gstatic.com",
+        },
     ]
     }
 };
