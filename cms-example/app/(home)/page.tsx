@@ -1,4 +1,3 @@
-import MainCharacter from "@/models/mainCharacter";
 import Image from "next/image";
 
 export default async function Home() {

@@ -1,12 +1,12 @@
 import { NextResponse } from 'next/server';
 import General, { IGeneral } from "@/models/general";
-import MainCharacter, { IMainCharacter } from "@/models/mainCharacter";
+import Customer, { ICustomer } from "@/models/Customer";
 import Page, { IPage } from "@/models/page";
 import { NextApiRequest, NextApiResponse } from "next";
 
 import { ZodError, z } from "zod";
 
-const mainCharacterSchema = z.object({
+const CustomerSchema = z.object({
     name: z.string().min(1, "Name is required")
 })
 
@@ -26,7 +26,7 @@ const generalSchema = z.object({
 })
 
 interface BodyRequest {
-    mainCharacter: IMainCharacter
+    Customer: ICustomer
     page: IPage
     general: IGeneral
 }
@@ -34,18 +34,18 @@ interface BodyRequest {
 export async function POST(req: Request) {
     console.log('called request to create a main character')
 
-    const { mainCharacter, page, general } = await req.json() as BodyRequest
+    const { Customer, page, general } = await req.json() as BodyRequest
 
     try {
-        mainCharacterSchema.parse(mainCharacter)
+        CustomerSchema.parse(Customer)
         pageSchema.parse(page)
         generalSchema.parse(general)
 
-        const newMainCharacter = new MainCharacter({
-            name: mainCharacter.name,
+        const newCustomer = new Customer({
+            name: Customer.name,
         })
 
-        await newMainCharacter.save()
+        await newCustomer.save()
 
         const newGeneral = new General({
             url_logo: general.url_logo,
@@ -54,7 +54,7 @@ export async function POST(req: Request) {
             background_color: general.background_color,
             foreground_color: general.foreground_color,
             text_color: general.text_color,
-            main_character_name: newMainCharacter.name,
+            main_character_name: newCustomer.name,
         })
 
         await newGeneral.save()
@@ -65,7 +65,7 @@ export async function POST(req: Request) {
             path: '/',
             sub_title: page.sub_title,
             main_image_url: page.main_image_url,
-            main_character_name: newMainCharacter.name,
+            main_character_name: newCustomer.name,
         })
 
         await Promise.all([
@@ -75,7 +75,7 @@ export async function POST(req: Request) {
 
         return new NextResponse(
             JSON.stringify({
-                mainCharacterName: mainCharacter.name
+                CustomerName: Customer.name
             }),
             {
                 status: 201

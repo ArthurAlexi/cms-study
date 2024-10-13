@@ -6,7 +6,7 @@ import { FormEvent } from "react"
 
 export default function Admin() {
     
-    async function createMainCharacter(event: FormEvent<HTMLFormElement>){
+    async function createCustomer(event: FormEvent<HTMLFormElement>){
         event.preventDefault()
 
         const data = new FormData(event.currentTarget)
@@ -26,7 +26,7 @@ export default function Admin() {
         const  main_image_url = data.get('main_image_url')?.toString()
 
         const body = {
-            mainCharacter: {
+            Customer: {
                 name: main_character_name
             },
             general: {
@@ -46,7 +46,7 @@ export default function Admin() {
         
         try {
             console.log(body)
-            const response = await fetch('/api/createMainCharacter', {
+            const response = await fetch('/api/createCustomer', {
                 method: 'POST',
                 headers: {
                     "Content-Type": "application/json",
@@ -72,7 +72,7 @@ export default function Admin() {
                 Create a default Main Character
             </button>
             <hr />
-            <form onSubmit={createMainCharacter} className="px-4 py-2 space-y-4 border border-zinc-600 rounded-md text-center">
+            <form onSubmit={createCustomer} className="px-4 py-2 space-y-4 border border-zinc-600 rounded-md text-center">
                 <h2 className="text-xl font-semibold">
                     Form to create a new Main Character
                 </h2>
