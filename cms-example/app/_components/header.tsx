@@ -2,7 +2,7 @@ import Image from "next/image";
 
 export function Header(){
     return (
-        <header className="border-b mb-2 px-6 border-foreground">
+        <header className="border-b px-6 border-foreground">
             <Image alt="logo" 
                 width={80}
                 height={30}
